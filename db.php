@@ -1,7 +1,5 @@
 <?php
-$dbhost = 'elephant.ecs.westminster.ac.uk';
-$dbuser = 'w1492613';
-$dbpass = '9ULXEYSWpHCb';
+Hidden for security reasons
 
 $conn = mysql_connect($dbhost, $dbuser, $dbpass) ;
 if (!$conn)
