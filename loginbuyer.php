@@ -1,8 +1,9 @@
 <?php
+session_start();
 //include a db.php file to connect to database
 include ("db.php");
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Login to Your Supply me Account";
+$pagename="Buyer Sign In";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -39,11 +40,9 @@ echo  "</div>";
 //---------------------------------------------
 echo    "<div class=breadcrumb-container>";
 echo      "<div class='col s12'>";
-echo        "<a href=index.php class=breadcrumb>Home</a>";
-echo        "  >";
-echo        "<a href=login.php class=breadcrumb>Login</a>";
-// echo        "<a href=#! class=breadcrumb>Third</a>";
-//echo        "  >";
+echo        "<a href=index.php class=breadcrumb>Home ></a>";
+echo        "<a href=login.php class=breadcrumb>Login ></a>";
+echo        "<a href=loginbuyer.php class=breadcrumb>Buyer Login ></a>";
 echo      "</div>";
 echo    "</div>";
 echo    "</div>";
@@ -57,7 +56,6 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Please choose your login type to continue </i></font>";
 echo "</div>";
 echo "</body>";
 echo "<p>";
@@ -65,15 +63,17 @@ echo "<p>";
 //---------------------------------------------
 //body of the site - choose login type
 //---------------------------------------------
-echo 	"<div class=container>";
-echo    "<div class=row>";
-echo      "<div class='col s12'><p><h6> Are you a buyer or supplier?</h6></p></div>";
-echo "<p> </p>";
-echo      "<div class='col s6'><a href=loginbuyer.php class='btn home'>Login as a Buyer</a></div>";
-echo      "<div class='col s6'><a href=loginsupplier.php class='btn home'>Login as a Supplier</a></div>";
-echo    "</div>";
-echo    "</div>";
-echo "</center>";
+//create a HTML form to capture the user's email and password
+echo "<form method=post action=getloginbuyer.php>" ;
+echo "<table border=0 cellpadding=5>";
+echo "<tr><td>Email</td>";
+echo "<td><input type=text name=l_email size=35></td></tr>";
+echo "<tr><td>Password </td>";
+echo "<td><input type=password name=l_password size=35></td></tr>";
+echo "<tr><td><input type=submit value='Login'></td>";
+echo "<td><input type=reset value='Clear Form'></td></tr>";
+echo "</table>";
+echo "</form>";
 
 //---------------------------------------------
 //Footer
