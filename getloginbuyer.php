@@ -1,9 +1,11 @@
 <?php
-session_start();
 //include a db.php file to connect to database
+session_start();
+include ("detectloginbuyer.php");
 include ("db.php");
+
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Buyer Sign In";
+$pagename="Confirm Login";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -38,14 +40,19 @@ echo  "</div>";
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
-echo    "<div class=breadcrumb-container>";
-echo      "<div class='col s12'>";
-echo        "<a href=index.php class=breadcrumb>Home ></a>";
-echo        "<a href=login.php class=breadcrumb>Login ></a>";
-echo        "<a href=loginbuyer.php class=breadcrumb>Buyer Login ></a>";
-echo      "</div>";
-echo    "</div>";
-echo    "</div>";
+// echo    "<div>";
+// echo      "<div class=col s12>";
+// echo        "<a href=#! class=breadcrumb>First</a>";
+// echo        "<a href=#! class=breadcrumb>Second</a>";
+// echo        "<a href=#! class=breadcrumb>Third</a>";
+// echo      "</div>";
+// echo    "</div>";
+
+
+//---------------------------------------------
+//Picture Slideshow
+//---------------------------------------------
+include("welcome.html");
 
 //---------------------------------------------
 //welcome of the site
@@ -56,12 +63,14 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
+echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 echo "</div>";
 echo "</body>";
+
 echo "<p>";
 
 //---------------------------------------------
-//body of the site 
+//body of the site (sign up)
 //---------------------------------------------
 //Capture the details entered in the form using the $_POST superglobal variable
 //Store these details into a set of new variables
@@ -103,20 +112,23 @@ else
 		{
 			//create a session variable for this customer who has just logged in
 			//store his/her id, first name and surname in this session variable		
-			$_SESSION['c_userid']=$userArray['userID'];
+			$_SESSION['c_userid']=$userArray['userId'];
 			$_SESSION['c_fname']=$userArray['userFName'];
 			$_SESSION['c_sname']=$userArray['userSName'];
 			//Display a greeting using the full name stored in the session variable
 			echo "<p>Hello, ".$_SESSION['c_fname']." ".$_SESSION['c_sname'];
-
 			echo "<br>You have successfully logged into the system!";
 			echo "<br>The email you entered is ".$email;
-			echo "<br>The password you entered is secret";
-			echo "<p>To view contracts <a href=contracts.php>Avaliable Contracts</a>";
-			echo "<br>To view your account <a href=account.php>My Account</a>";
+			echo "<p>To continue shopping <a href=index.php>Product Index</a>";
+			echo "<br>To view your basket <a href=basket.php>My Basket</a>";
 		}
 	}
 }
+
+
+
+
+
 //---------------------------------------------
 //Footer
 //---------------------------------------------

@@ -1,9 +1,11 @@
 <?php
-session_start();
 //include a db.php file to connect to database
+session_start();
+include ("detectloginbuyer.php");
 include ("db.php");
+
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Buyer Sign In";
+$pagename="Welcome to Supply.me";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -38,14 +40,19 @@ echo  "</div>";
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
-echo    "<div class=breadcrumb-container>";
-echo      "<div class='col s12'>";
-echo        "<a href=index.php class=breadcrumb>Home ></a>";
-echo        "<a href=login.php class=breadcrumb>Login ></a>";
-echo        "<a href=loginbuyer.php class=breadcrumb>Buyer Login ></a>";
-echo      "</div>";
-echo    "</div>";
-echo    "</div>";
+// echo    "<div>";
+// echo      "<div class=col s12>";
+// echo        "<a href=#! class=breadcrumb>First</a>";
+// echo        "<a href=#! class=breadcrumb>Second</a>";
+// echo        "<a href=#! class=breadcrumb>Third</a>";
+// echo      "</div>";
+// echo    "</div>";
+
+
+//---------------------------------------------
+//Picture Slideshow
+//---------------------------------------------
+include("welcome.html");
 
 //---------------------------------------------
 //welcome of the site
@@ -56,12 +63,14 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
+echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 echo "</div>";
 echo "</body>";
+
 echo "<p>";
 
 //---------------------------------------------
-//body of the site - choose login type
+//body of the site (sign up)
 //---------------------------------------------
 //create a HTML form to capture the user's email and password
 echo "<form method=post action=getloginbuyer.php>" ;

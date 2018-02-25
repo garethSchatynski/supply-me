@@ -1,7 +1,6 @@
 <?php
 //include a db.php file to connect to database
 session_start();
-include ("detectloginbuyer.php");
 include ("db.php");
 
 //create a variable called $pagename which contains the actual name of the page and set up scaling
@@ -28,31 +27,10 @@ echo   "<nav>";
 echo     "<div class=nav-wrapper>";
 echo        "<a href=index.php class=brand-logo center> Supply.me</a>";
 echo        "<ul class=right hide-on-med-and-down>";
-//Multiple choice Navbar depending on login state
-	if (isset($_SESSION['c_userid']))
-	{
-		echo  "<li><a href=newcontracts.php>Create Contract</a></li>";
-		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
-		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
-		echo  "<li><a href=accountbuyer.php>Account</a></li>";
-		echo  "<li><a href=logout.php>Sign Out</a></li>";
-	}
-	else
-	{
-			if (isset($_SESSION['c_supplierid']))
-			{
-				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo  "<li><a href=accountbuyer.php>Account</a></li>";
-				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
-				echo  "<li><a href=logout.php>Sign Out</a></li>";
-
-			}
-
-				echo   "<li><a href=contracts.php>Open Contracts</a></li>";
-				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
-				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
-		}
+echo          "<li><a href=contracts.php>Avaliable Contracts</a></li>";
+echo          "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
+echo          "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+echo          "<li><a href=login.php class=btn>Sign In</a></li>";
 echo        "</ul>";
 echo      "</div>";
 echo    "</nav>";
@@ -78,6 +56,7 @@ echo "<body>";
 echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
+include ("detectloginbuyer.php");
 echo "<h5>".$pagename."</h5>";
 echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 echo "</div>";
@@ -85,9 +64,16 @@ echo "</body>";
 
 echo "<p>";
 
-//---------------------------------------------
-//body of the site 
-//---------------------------------------------
+//clear basket session, user id session, first name, surname session and all sessions
+unset ($_SESSION['basket']);
+unset ($_SESSION['c_userid']);
+unset ($_SESSION['c_fname']);
+unset ($_SESSION['c_sname']);
+unset ($_SESSION);
+//destroy session
+session_destroy();
+echo "<p>You have succesfully logged out";
+
 
 
 

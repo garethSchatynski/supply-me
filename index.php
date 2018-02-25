@@ -1,6 +1,9 @@
 <?php
 //include a db.php file to connect to database
+session_start();
 include ("db.php");
+
+
 //create a variable called $pagename which contains the actual name of the page and set up scaling
 $pagename="Welcome to Supply.me";
 echo "<head>";
@@ -25,10 +28,30 @@ echo   "<nav>";
 echo     "<div class=nav-wrapper>";
 echo        "<a href=index.php class=brand-logo center> Supply.me</a>";
 echo        "<ul class=right hide-on-med-and-down>";
-echo          "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-echo          "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-echo          "<li><a href=registersupplier.php>Register as Supplier</a></li>";
-echo          "<li><a href=login.php class=btn>Sign In</a></li>";
+//Multiple choice Navbar depending on login state
+	if (isset($_SESSION['c_userid']))
+	{
+		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
+		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
+		echo  "<li><a href=accountbuyer.php>Account</a></li>";
+		echo  "<li><a href=logout.php>Sign Out</a></li>";
+	}
+	else
+	{
+			if (isset($_SESSION['c_supplierid']))
+			{
+				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
+				echo  "<li><a href=accountbuyer.php>Account</a></li>";
+				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
+				echo  "<li><a href=logout.php>Sign Out</a></li>";
+
+			}
+
+				echo   "<li><a href=contracts.php>Avaliable Contracts</a></li>";
+				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
+				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
+		}
 echo        "</ul>";
 echo      "</div>";
 echo    "</nav>";
@@ -60,7 +83,6 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 echo "</div>";
 echo "</body>";
 
@@ -69,13 +91,30 @@ echo "<p>";
 //---------------------------------------------
 //body of the site (sign up)
 //---------------------------------------------
-echo 	"<div class=container>";
-echo    "<div class=row>";
-echo      "<div class='col s12'><p><h6> Are you a buyer or supplier?</h6></p></div>";
-echo      "<div class='col s6'><a href=registerbuyer.php class='waves-effect waves-light btn-large home'>Register as a Buyer</a></div>";
-echo      "<div class='col s6'><a href=registersupplier.php class='waves-effect waves-light btn-large home'>Register as a Supplier</a></div>";
-echo    "</div>";
-echo    "</div>";
+	if (isset($_SESSION['c_userid']))
+	{
+
+	}
+	else
+	{
+			if (isset($_SESSION['c_supplierid']))
+			{
+
+
+			}
+				echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
+				echo 	"<div class=container>";
+				echo    "<div class=row>";
+				echo      "<div class='col s12'><p><h6> Are you a buyer or supplier?</h6></p></div>";
+				echo      "<div class='col s6'><a href=registerbuyer.php class='waves-effect waves-light btn-large home'>Register as a Buyer</a></div>";
+				echo      "<div class='col s6'><a href=registersupplier.php class='waves-effect waves-light btn-large home'>Register as a Supplier</a></div>";
+				echo    "</div>";
+				echo    "</div>";
+		}
+
+
+
+
 echo "</center>";
 
 //---------------------------------------------
