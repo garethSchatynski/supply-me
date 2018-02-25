@@ -1,7 +1,7 @@
 <?php
 //include a db.php file to connect to database
 session_start();
-include ("detectloginbuyer.php");
+
 include ("db.php");
 
 //create a variable called $pagename which contains the actual name of the page and set up scaling
@@ -28,15 +28,35 @@ echo   "<nav>";
 echo     "<div class=nav-wrapper>";
 echo        "<a href=index.php class=brand-logo center> Supply.me</a>";
 echo        "<ul class=right hide-on-med-and-down>";
-echo          "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-echo          "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-echo          "<li><a href=registersupplier.php>Register as Supplier</a></li>";
-echo          "<li><a href=login.php class=btn>Sign In</a></li>";
+//Multiple choice Navbar depending on login state
+	if (isset($_SESSION['c_userid']))
+	{
+		echo  "<li><a href=createcontract.php>Create Contract</a></li>";
+		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
+		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
+		echo  "<li><a href=accountbuyer.php>Account</a></li>";
+		echo  "<li><a href=logout.php>Sign Out</a></li>";
+	}
+	else
+	{
+			if (isset($_SESSION['c_supplierid']))
+			{
+				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
+				echo  "<li><a href=accountbuyer.php>Account</a></li>";
+				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
+				echo  "<li><a href=logout.php>Sign Out</a></li>";
+
+			}
+
+				echo   "<li><a href=contracts.php>Avaliable Contracts</a></li>";
+				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
+				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
+		}
 echo        "</ul>";
 echo      "</div>";
 echo    "</nav>";
 echo  "</div>";
-
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
@@ -48,11 +68,6 @@ echo  "</div>";
 // echo      "</div>";
 // echo    "</div>";
 
-
-//---------------------------------------------
-//Picture Slideshow
-//---------------------------------------------
-include("welcome.html");
 
 //---------------------------------------------
 //welcome of the site
@@ -119,8 +134,8 @@ else
 			echo "<p>Hello, ".$_SESSION['c_fname']." ".$_SESSION['c_sname'];
 			echo "<br>You have successfully logged into the system!";
 			echo "<br>The email you entered is ".$email;
-			echo "<p>To continue shopping <a href=index.php>Product Index</a>";
-			echo "<br>To view your basket <a href=basket.php>My Basket</a>";
+			echo "<p>Require some items? <a href=createcontract.php>Create Contract</a>";
+			echo "<br>Manage your account <a href=account.php>My Account</a>";
 		}
 	}
 }

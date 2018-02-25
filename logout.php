@@ -56,7 +56,6 @@ echo "<body>";
 echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
-include ("detectloginbuyer.php");
 echo "<h5>".$pagename."</h5>";
 echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 echo "</div>";
@@ -65,7 +64,6 @@ echo "</body>";
 echo "<p>";
 
 //clear basket session, user id session, first name, surname session and all sessions
-unset ($_SESSION['basket']);
 unset ($_SESSION['c_userid']);
 unset ($_SESSION['c_fname']);
 unset ($_SESSION['c_sname']);

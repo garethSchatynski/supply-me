@@ -4,7 +4,7 @@ session_start();
 include ("db.php");
 
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Welcome to Supply.me";
+$pagename="Important Information";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -78,7 +78,7 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
+echo "<font size=2> <p><i> Information </i></font>";
 echo "</div>";
 echo "</body>";
 
@@ -87,7 +87,58 @@ echo "<p>";
 //---------------------------------------------
 //body of the site 
 //---------------------------------------------
+//Capture the details entered in the form using the $_POST superglobal variable
+//Store these details into a set of new variables
+$name=$_POST['r_name'];
+$description=$_POST['r_description'];
+$category=$_POST['r_category'];
+$quant=$_POST['r_quant'];
+$height=$_POST['r_height'];
+$width=$_POST['r_width'];
+$depth=$_POST['r_depth'];
+$address=$_POST['r_address'];
+$country=$_POST['r_country'];
+$city=$_POST['r_city'];
+$postcode=$_POST['r_postcode'];
+$status='open';
+$id=$_SESSION['c_userid'];
 
+if (!$name or !$description or !$category or !$quant or !$address or!$country or!$city or !$postcode)
+{
+	echo "<p>Your contract is incomplete ";
+	echo "<br>Please fill in all the required details ";
+	echo "<br>Go back to <a href=createcontract.php>Create Contract</a>";
+}
+	else	
+	{
+		$addnewcontractSQL="insert into contracts 
+		(itemName, itemDesc, itemCategory, itemQuant, itemHeight, itemWidth, itemDepth, itemAddress, itemCountry, itemCity, itemPostCode, contractStatus, userId)
+		values ('".$name."','".$description."','".$category."','".$quant."','".$height."','".$width."',
+		 '".$depth."','".$address."','".$country."','".$city."','".$postcode."','".$status."','".$id."')";
+		$exeaddnewcontractSQL=mysql_query($addnewcontractSQL);
+		//Retrieve the error number. if the error detector returns the number 0, everything is fine
+		
+		if (mysql_errno($conn)==0)
+		{
+			echo "<center>";
+			echo "<p>Contract successfully added to the database, you can now recieve bids";
+			echo "<div align=center class='row'>";
+			echo "<div class='col s12 m6 l3'></div>";
+    		echo "<div class='col s12 m6 l3'><a href=createcontract.php class='btn'>Create another?</a></div>";
+    		echo "<div class='col s12 m6 l3'><a href=contracts.php class='btn'>View Contracts</a></div>";
+			echo "</div>";
+			echo "<p>";;
+			echo "</center>";
+		}
+		//if the error detector does not return the number 0, there is a problem
+else 
+		{
+			echo "<p>There is an error with your request";
+		}
+	}	
+
+
+echo "</center>";
 
 
 //---------------------------------------------

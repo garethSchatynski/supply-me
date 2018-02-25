@@ -31,6 +31,7 @@ echo        "<ul class=right hide-on-med-and-down>";
 //Multiple choice Navbar depending on login state
 	if (isset($_SESSION['c_userid']))
 	{
+		echo  "<li><a href=createcontract.php>Create Contract</a></li>";
 		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
 		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
 		echo  "<li><a href=accountbuyer.php>Account</a></li>";
