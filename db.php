@@ -1,10 +1,20 @@
 <?php
-Hidden for security reasons
-
-$conn = mysql_connect($dbhost, $dbuser, $dbpass) ;
-if (!$conn)
-  {
-  die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("w1492613_0", $conn);
+function OpenCon()
+ {
+ $dbhost = "localhost";
+ $dbuser = "root";
+ $dbpass = "";
+ $db = "supplyme";
+ 
+ 
+ $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
+ 
+ 
+ return $conn;
+ }
+ 
+function CloseCon($conn)
+ {
+ $conn -> close();
+ }
 ?>	

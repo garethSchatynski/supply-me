@@ -4,7 +4,7 @@ session_start();
 include ("db.php");
 
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Create Contract";
+$pagename="Contract Deliverables";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -78,115 +78,117 @@ echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Complete the below form to create a new open contract </i></font>";
+echo "<font size=2> <p><i> Details of the below contract </i></font>";
 echo "</div>";
 echo "</body>";
+
+echo "<p>";
 
 //---------------------------------------------
 //body of the site 
 //---------------------------------------------
+
+//retrieve the product id passed from the previous page using the $_GET superglobal variable
+//store the value in a variable called $prodid
+$contractid=$_GET['u_contractID'];
+//echo "<p>Selected product Id: ".$prodid;
+
+
+//query the product table to retrieve the record for which the value of the product id 
+//matches the product id of the product that was selected by the user
+$contractSQL="select contractID, itemName, itemDesc, 
+itemCategory, itemQuant, itemHeight, itemWidth, itemDepth, itemAddress, itemCountry, itemCity, itemPostCode, dateTime, contractStatus, userId from contracts
+where contractID=".$contractid;
+//execute SQL query
+$execontractSQL=mysql_query($contractSQL) or die(mysql_error());
+//create array of records & populate it with result of the execution of the SQL query
+$thearrayprod=mysql_fetch_array($execontractSQL);
+
+//display product name in capital letters
 echo "<center>";
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<h6>Contract Deliverables</h6>";
-echo "</div>";
-echo "</div>";
 //create a HTML form to capture the user's details
 echo "<div class=container>";
 echo "<div class=row>";
-echo "<form method=post class='col s12' action=getcreatecontract.php>" ;
 //itemName
 echo "<div class=row>";
-echo "<div class='input-field col s12'>";
-echo "<td><input id=name type=text name=r_name size=30></td></tr>";
-echo "<label for=name>Desired Item Name</label>";
+echo "<div class='col s12'>";
+echo "<p><center><h6>".($thearrayprod['itemName'])."</h6></center>";
 echo "</div>";
 echo "</div>";
 //Description
 echo "<div class=row>";
-echo "<div class='input-field col s12'>";
-echo "<textarea id=description type=text class=materialize-textarea name=r_description size=50000></textarea>";
-echo "<label for=description>Input Item Description</label>";
+echo "<div class='col s12'>";
+echo "<b>Contract Description</b><h6><p>".($thearrayprod['itemDesc']);
 echo "</div>";
 echo "</div>";
 //category
 echo "<div class=row>";
-echo "<div class='input-field col s6'>";
-echo "<td><input id=category type=text name=r_category size=30></td></tr>";
-echo "<label for=category>Item Category</label>";
+echo "<div class='col s6'>";
+echo "<p><b>Item Category</b><h6>".($thearrayprod['itemCategory']);
 echo "</div>";
 //quantity
-echo "<div class='input-field col s6'>";
-echo "<td><input id=quant type=number name=r_quant size=10></td></tr>";
-echo "<label for=quant>Quantity Required</label>";
+echo "<div class=row>";
+echo "<div class='col s6'>";
+echo "<p><b>Quantity Required</b><h6>".($thearrayprod['itemQuant']);
 echo "</div>";
 echo "</div>";
 //decription
 echo "<div class=row>";
 echo "<div class='col s12'>";
-echo "<h6>Dimensions of Product (Can Leave Blank)</h6>";
+echo "<h6><b>Dimensions of Contract</b></h6>";
 echo "</div>";
 echo "</div>";
 //height 
 echo "<div class=row>";
-echo "<div class='input-field col s4'>";
-echo "<td><input id=height type=number name=r_height size=20></td></tr>";
-echo "<label for=height>Item Height Dimensions Specification (mm)</label>";
+echo "<div class='col s4'>";
+echo "<p><b>Desired Height (mm) </b><h6>".($thearrayprod['itemHeight']);
 echo "</div>";
 //width 
-echo "<div class='input-field col s4'>";
-echo "<td><input id=width type=number name=r_width size=20></td></tr>";
-echo "<label for=width>Item width Dimensions Specification (mm)</label>";
+echo "<div class='col s4'>";
+echo "<p><b>Desired width (mm): </b><h6>".($thearrayprod['itemWidth']);
 echo "</div>";
 //depth 
-echo "<div class='input-field col s4'>";
-echo "<td><input id=depth type=number name=r_depth size=20></td></tr>";
-echo "<label for=Depth>Item Depth Dimensions Specification (mm)</label>";
+echo "<div class='col s4'>";
+echo "<p><b>Desired depth (mm): </b><h6>".($thearrayprod['itemDepth']);
 echo "</div>";
 echo "</div>";
 //decription
 echo "<div class=row>";
 echo "<div class='col s12'>";
-echo "<h6>Delivery Information (where is the contract shipping to?)</h6>";
+echo "<h6><b>Contract Delivery Address</b></h6>";
 echo "</div>";
 echo "</div>";
 //address
 echo "<div class=row>";
-echo "<div class='input-field col s12'>";
-echo "<td><input id=address type=text name=r_address size=35></td></tr>";
-echo "<label for=address>Address</label>";
+echo "<div class='col s12'>";
+echo "<b>Address</b><h6><p>".($thearrayprod['itemAddress']);
 echo "</div>";
 echo "</div>";
 //country
 echo "<div class=row>";
-echo "<div class='input-field col s12'>";
-echo "<td><input id=country type=text name=r_country size=35></td></tr>";
-echo "<label for=country>Country</label>";
+echo "<div class='col s12'>";
+echo "<b>Country</b><h6><p>".($thearrayprod['itemCountry']);
 echo "</div>";
 echo "</div>";
 //city
 echo "<div class=row>";
-echo "<div class='input-field col s6'>";
-echo "<td><input id=city type=text name=r_city size=35></td></tr>";
-echo "<label for=city>City</label>";
+echo "<div class='col s6'>";
+echo "<p><b>City</b><h6>".($thearrayprod['itemCity']);
 echo "</div>";
 //postcode
-echo "<div class='input-field col s6'>";
-echo "<td><input id=postcode type=text name=r_postcode size=35></td></tr>";
-echo "<label for=postcode>Postal Code</label>";
-echo "</div>";
-echo "</div>";
-//Buttons
-echo "<center>";
 echo "<div class=row>";
-echo "<div class='col s2'><tr><td><input class=btn type=submit value='Open Contract'></td></div>";
-echo "<div class='col s2'><td><input class='btn btn-clear' type=reset value='Clear Form'></td></tr></div>";
+echo "<div class='col s6'>";
+echo "<p><b>Postcode</b><h6>".($thearrayprod['itemPostCode']);
+echo "</div>";
+echo "</div>";
+//Contract ID
+echo "<div class=row>";
+echo "<div class='col s12'>";
+echo "<p align=right>".($thearrayprod['contractID']);
+echo "</div>";
 echo "</div>";
 echo "</center>";
-echo "</div>";
-echo "</form>" ;
-echo "</div>";
-echo "</div>";
+
 //---------------------------------------------
 //Footer
 //---------------------------------------------

@@ -93,15 +93,17 @@ else
 	else	
 	{
 		//Write SQL query to insert new user into users table and execute SQL query
+
 		$addnewuserSQL="insert into users 
 		(userFName, userSName, userAddress, userCountry, userCity, userPostCode, userTelNo, userCountryCode, userEmail, userPassword)
 		values ('".$fname."','".$lname."','".$address."','".$country."','".$city."','".$postcode."',
 		 '".$telno."','".$countrycode."','".$email."','".$password1."')";
 		$exeaddnewuserSQL=mysql_query($addnewuserSQL);
-
 		//Retrieve the error number. if the error detector returns the number 0, everything is fine
 		if (mysql_errno($conn)==0)
 		{
+			
+			echo "<p><b>Account Created Successfully</b></p>";
 			echo "<div class='row'>";
 			echo "<div class='col s12 m4 l2'><p></p></div>";
 			echo "<div class='col s12 m4 l8'><a href=loginbuyer.php class='btn-large home'>Sign in to your New account</a></div>";

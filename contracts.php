@@ -103,15 +103,15 @@ while ($arrayprod=mysql_fetch_array($exeSQL))
 	echo "<div class=container>";
 	echo "<a href=viewContract.php>";
     echo "<div class='collection'>";
-    echo "<a href=viewContract.php class=collection-item method=POST>".$arrayprod['contractID']."<b>.	 Contract Name: ".$arrayprod['itemName']. "</b> - Country: ".$arrayprod['itemCountry']."<p align=right>Quantity Required: ".$arrayprod['itemQuant']."</p>";
+    echo "<a class=collection-item href=contractinfo.php?u_contractID=".$arrayprod['contractID'].".	 Contract Name: ".$arrayprod['itemName']. "</b> - Country: ".$arrayprod['itemCountry']."<p align=right>Quantity Required: ".$arrayprod['itemQuant'];
     echo "</div>";
     echo "</div>";
     echo "</a>";
 }
 
+include("footfile.html");
 
-
-
+?>
 
 
 
