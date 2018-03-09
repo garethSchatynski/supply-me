@@ -1,19 +1,13 @@
 <?php
-//include a db.php file to connect to database
 session_start();
-include ("db.php");
-
-//create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Important Information";
+include 'db.php';
+$pagename="Information on Registration";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
 //call in the style sheet called ystylesheet.css to format the page as defined in the style sheet
 echo "<link rel=stylesheet type=text/css href=materialize.css>";
 echo "<script src=js/materialize.js></script>";
-//---------------------------------------------
-//Header
-//---------------------------------------------
 
 //display window title
 echo "<title>".$pagename."</title>";
@@ -21,7 +15,6 @@ echo "<title>".$pagename."</title>";
 //---------------------------------------------
 //Header
 //---------------------------------------------
-
 echo "<div class=navbar-fixed>";
 echo   "<nav>";
 echo     "<div class=nav-wrapper>";
@@ -52,87 +45,102 @@ echo  "</div>";
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
-// echo    "<div>";
-// echo      "<div class=col s12>";
-// echo        "<a href=#! class=breadcrumb>First</a>";
-// echo        "<a href=#! class=breadcrumb>Second</a>";
+echo    "<div class=breadcrumb-container>";
+echo      "<div class='col s12'>";
+echo        "<a href=index.php class=breadcrumb>Home</a>";
+echo        "  >";
+echo        "<a href=register.php class=breadcrumb>Registration</a>";
+echo        "  >";
+echo        "<a href=getregister.php class=breadcrumb>Registration Information</a>";
 // echo        "<a href=#! class=breadcrumb>Third</a>";
-// echo      "</div>";
-// echo    "</div>";
-
+//echo        "  >";
+echo      "</div>";
+echo    "</div>";
+echo    "</div>";
 
 //---------------------------------------------
 //welcome of the site
 //---------------------------------------------
-include ("detectlogin.php");
+
 echo "<body>";
 echo "<center>";
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Information </i></font>";
 echo "</div>";
 echo "</body>";
 
 echo "<p>";
 
-//---------------------------------------------
-//body of the site 
-//---------------------------------------------
+
 //Capture the details entered in the form using the $_POST superglobal variable
 //Store these details into a set of new variables
-$name=$_POST['r_name'];
-$description=$_POST['r_description'];
-$category=$_POST['r_category'];
-$quant=$_POST['r_quant'];
-$height=$_POST['r_height'];
-$width=$_POST['r_width'];
-$depth=$_POST['r_depth'];
+$fname=$_POST['r_firstname'];
+$lname=$_POST['r_lastname'];
+$company=$_POST['r_company'];
 $address=$_POST['r_address'];
 $country=$_POST['r_country'];
 $city=$_POST['r_city'];
 $postcode=$_POST['r_postcode'];
-$status='open';
-$id=$_SESSION['c_userid'];
+$telno=$_POST['r_telno'];
+$countrycode=$_POST['r_countrycode'];
+$email=$_POST['r_email'];
+$password1=$_POST['r_password1'];
+$password2=$_POST['r_password2'];
 
-if (!$name or !$description or !$category or !$quant or !$address or!$country or!$city or !$postcode)
+//If any of the variables is empty
+if (!$fname or !$lname or !$address or!$country or!$city or !$postcode or !$telno or!$countrycode or !$password1 or !$password2)
 {
-	echo "<p>Your contract is incomplete ";
+	echo "<p>Your form is incomplete ";
 	echo "<br>Please fill in all the required details ";
-	echo "<br>Go back to <a href=createcontract.php>Create Contract</a>";
+	echo "<br>Go back to <a href=register.php>Register</a>";
 }
+else
+{	
+	//if the 2 entered passwords do not match
+	if ($password1<>$password2)
+	{
+		echo "<p>The 2 passwords you entered do not match";
+		echo "<br>Please make sure you enther them correctly";
+		echo "<br>Go back to <a href=register.php>Register</a>";	
+	}
 	else	
 	{
-		mysqli_query($con,"INSERT INTO contracts (itemName, itemDesc, itemCategory, itemQuant, itemHeight, itemWidth, itemDepth, itemAddress, itemCountry, itemCity, itemPostCode, contractStatus, userId)
-		values ('".$name."','".$description."','".$category."','".$quant."','".$height."','".$width."',
-		 '".$depth."','".$address."','".$country."','".$city."','".$postcode."','".$status."','".$id."')");
+		//Write SQL query to insert new user into users table and execute SQL query
+
+		mysqli_query($con,"INSERT INTO users (userFName, userSName, userCompany, userAddress, userCountry, userCity, userPostCode, userTelNo, userCountryCode, userEmail, userPassword)
+		values ('".$fname."','".$lname."','".$company."','".$address."','".$country."','".$city."','".$postcode."',
+		 '".$telno."','".$countrycode."','".$email."','".$password1."')");
 		//Retrieve the error number. if the error detector returns the number 0, everything is fine
 		if (mysqli_errno($con)==0)
 		{
-			echo "<center>";
-			echo "<p>Contract successfully added to the database, you can now recieve bids";
-			echo "<div align=center class='row'>";
-			echo "<div class='col s12 m6 l3'></div>";
-    		echo "<div class='col s12 m6 l3'><a href=createcontract.php class='btn'>Create another?</a></div>";
-    		echo "<div class='col s12 m6 l3'><a href=contracts.php class='btn'>View Contracts</a></div>";
+			
+			echo "<p><b>Account Created Successfully</b></p>";
+			echo "<div class='row'>";
+			echo "<div class='col s12 m4 l2'><p></p></div>";
+			echo "<div class='col s12 m4 l8'><a href=login.php class='btn-large home'>Sign in to your New account</a></div>";
+			echo "</div>";
 			echo "</div>";
 			echo "<p>";;
-			echo "</center>";
 		}
 		//if the error detector does not return the number 0, there is a problem
 else 
 		{
-			echo "<p>There is an error with your request";
+			echo "<p>There is an error with your registration";
+			//if the error detector returned the number 1062, 
+			//the unique constraint is violated as the user entered an email which already existed
+			if (mysqli_errno($con)==1062)
+			{
+				echo "<br>The email you entered already exists";
+				echo "<br>Go back to <a href=register.php>Register</a>";
+			}
 		}
 	}	
+}
+
+
 
 
 echo "</center>";
-
-
-//---------------------------------------------
-//Footer
-//---------------------------------------------
-//include footer layout
 include("footfile.html");
 ?>

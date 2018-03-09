@@ -1,20 +1,8 @@
 <?php
-function OpenCon()
- {
- $dbhost = "localhost";
- $dbuser = "root";
- $dbpass = "";
- $db = "supplyme";
- 
- 
- $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
- 
- 
- return $conn;
- }
- 
-function CloseCon($conn)
- {
- $conn -> close();
- }
+$con=mysqli_connect("localhost","root","","supplyme");
+// Check connection
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
 ?>	

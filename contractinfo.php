@@ -2,6 +2,7 @@
 //include a db.php file to connect to database
 session_start();
 include ("db.php");
+include ("web3.html");
 
 //create a variable called $pagename which contains the actual name of the page and set up scaling
 $pagename="Contract Deliverables";
@@ -33,23 +34,15 @@ echo        "<ul class=right hide-on-med-and-down>";
 		echo  "<li><a href=createcontract.php>Create Contract</a></li>";
 		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
 		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
+		echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
 		echo  "<li><a href=accountbuyer.php>Account</a></li>";
 		echo  "<li><a href=logout.php>Sign Out</a></li>";
 	}
 	else
 	{
-			if (isset($_SESSION['c_supplierid']))
-			{
-				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo  "<li><a href=accountbuyer.php>Account</a></li>";
-				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
-				echo  "<li><a href=logout.php>Sign Out</a></li>";
-
-			}
 
 				echo   "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+				echo   "<li><a href=register.php>Register</a></li>";
 				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
 		}
 echo        "</ul>";
@@ -72,7 +65,7 @@ echo  "</div>";
 //---------------------------------------------
 //welcome of the site
 //---------------------------------------------
-include ("detectloginbuyer.php");
+include ("detectlogin.php");
 echo "<body>";
 echo "<center>";
 echo "<div class=container>";
@@ -96,98 +89,104 @@ $contractid=$_GET['u_contractID'];
 
 //query the product table to retrieve the record for which the value of the product id 
 //matches the product id of the product that was selected by the user
-$contractSQL="select contractID, itemName, itemDesc, 
-itemCategory, itemQuant, itemHeight, itemWidth, itemDepth, itemAddress, itemCountry, itemCity, itemPostCode, dateTime, contractStatus, userId from contracts
-where contractID=".$contractid;
+$query="SELECT contractID, itemName, itemDesc, 
+itemCategory, itemQuant, itemHeight, itemWidth, itemDepth, itemAddress, itemCountry, itemCity, itemPostCode, dateTime, contractStatus, userId FROM contracts
+WHERE contractID=".$contractid;
 //execute SQL query
-$execontractSQL=mysql_query($contractSQL) or die(mysql_error());
-//create array of records & populate it with result of the execution of the SQL query
-$thearrayprod=mysql_fetch_array($execontractSQL);
+$sql = $con->query($query);
+// num_rows will count the affected rows base on your sql query. so $n will return a number base on your query
+$n = $sql->num_rows;
+if($n > 0){
+	$array = mysqli_fetch_array($sql);
+	$height=$array['itemHeight'];
+	$width=$array['itemWidth'];
+	$depth=$array['itemDepth'];
+	$userid=$_SESSION['c_userid'];
+	$contractid=$array['contractID'];
 
 //display product name in capital letters
 echo "<center>";
 //create a HTML form to capture the user's details
+echo "<p><h6>".($array['itemName'])."<p></h6>";
 echo "<div class=container>";
-echo "<div class=row>";
-//itemName
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<p><center><h6>".($thearrayprod['itemName'])."</h6></center>";
+echo	"<table class=striped>";
+echo	  "<tr>";
+echo		  "<td colspan=6> Description <p>".($array['itemDesc'])."</td>";
+echo	  "</tr align='right'>";
+echo      "<center>";
+echo	  "<tr>";
+echo		"<td colspan=3> Item Category: ".($array['itemCategory'])."</td>";
+echo		"<td colspan=3>Quantity Required: ".($array['itemQuant'])."</td>";
+echo	  "</tr>";
+if($height > 0 or $width > 0 or $depth > 0){
+	echo	  "<tr>";
+	echo		"<td colspan=6><h6> Dimensions of Item </h6></td>";
+	echo	  "</tr>";
+	echo	  "<tr>";
+	echo		"<td colspan=2>Height (mm): ".($array['itemHeight'])."</td>";
+	echo		"<td colspan=2>Width (mm): ".($array['itemWidth'])."</td>";
+	echo		"<td colspan=2>Depth (mm): ".($array['itemDepth'])."</td>";
+	echo	  "</tr>";
+}
+echo	  "<tr>";
+echo		"<td colspan=6><h6> Delivery Information for Contract</h6></td>";
+echo	  "</tr>";
+echo	  "<tr>";
+echo		"<td colspan=3> Country: ".($array['itemCountry'])."</td>";
+echo		"<td colspan=3> Address: ".($array['itemAddress'])."</td>";
+echo	  "</tr>";
+echo	  "<tr>";
+echo		"<td colspan=3> City: ".($array['itemCity'])."</td>";
+echo		"<td colspan=3> PostCode: ".($array['itemPostCode'])."</td>";
+echo	  "</tr>";
+echo  "</table>";
 echo "</div>";
 echo "</div>";
-//Description
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<b>Contract Description</b><h6><p>".($thearrayprod['itemDesc']);
-echo "</div>";
-echo "</div>";
-//category
-echo "<div class=row>";
-echo "<div class='col s6'>";
-echo "<p><b>Item Category</b><h6>".($thearrayprod['itemCategory']);
-echo "</div>";
-//quantity
-echo "<div class=row>";
-echo "<div class='col s6'>";
-echo "<p><b>Quantity Required</b><h6>".($thearrayprod['itemQuant']);
-echo "</div>";
-echo "</div>";
-//decription
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<h6><b>Dimensions of Contract</b></h6>";
-echo "</div>";
-echo "</div>";
-//height 
-echo "<div class=row>";
-echo "<div class='col s4'>";
-echo "<p><b>Desired Height (mm) </b><h6>".($thearrayprod['itemHeight']);
-echo "</div>";
-//width 
-echo "<div class='col s4'>";
-echo "<p><b>Desired width (mm): </b><h6>".($thearrayprod['itemWidth']);
-echo "</div>";
-//depth 
-echo "<div class='col s4'>";
-echo "<p><b>Desired depth (mm): </b><h6>".($thearrayprod['itemDepth']);
-echo "</div>";
-echo "</div>";
-//decription
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<h6><b>Contract Delivery Address</b></h6>";
-echo "</div>";
-echo "</div>";
-//address
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<b>Address</b><h6><p>".($thearrayprod['itemAddress']);
-echo "</div>";
-echo "</div>";
-//country
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<b>Country</b><h6><p>".($thearrayprod['itemCountry']);
-echo "</div>";
-echo "</div>";
-//city
-echo "<div class=row>";
-echo "<div class='col s6'>";
-echo "<p><b>City</b><h6>".($thearrayprod['itemCity']);
-echo "</div>";
-//postcode
-echo "<div class=row>";
-echo "<div class='col s6'>";
-echo "<p><b>Postcode</b><h6>".($thearrayprod['itemPostCode']);
-echo "</div>";
-echo "</div>";
-//Contract ID
-echo "<div class=row>";
-echo "<div class='col s12'>";
-echo "<p align=right>".($thearrayprod['contractID']);
-echo "</div>";
-echo "</div>";
-echo "</center>";
+
+//Make session variable for contractId
+$_SESSION['cid'] = $array['contractID'];
+
+//button to make contract offer
+	if (isset($_SESSION['c_userid'])) {
+
+
+		echo "<center>";
+		echo "<div class=row>";
+		echo "<div class='col s12'>";
+		
+		echo "</div>";
+		echo "</div>";
+		//create a HTML form to capture the user's details
+		echo "<div class=container>";
+		echo "<div class=row>";
+		echo "<form method=post class='col s12' action=makeoffer.php>" ;
+		//amount
+		echo "<div align=center><h6>Make an offer for the contract</h6></div>";
+		echo "<div class=row>";
+		echo "<div class='input-field col s12'>";
+		echo "Contract offer Total Price (in Ethereum)";
+		echo "</div>";
+		echo "</div>";
+		echo "<div class=row>";
+		echo "<div class='input-field col s12'>";
+		echo "<td><input id=total type=decimal name=total></td></tr>";
+		echo "</div>";
+		echo "<div class=''><tr><td><input class=btn type=submit value='Create Offer'></td></div>";
+		echo "</div>";
+		echo "</form>" ;
+		echo "</div>";
+		echo "</div>";
+
+	}
+	else {
+		echo "<h6> Login or Register to make an offer for this contract <p></h6>";
+	}
+
+}
+else {
+
+	echo "No Open Contracts Avaliable!";
+	}
 
 //---------------------------------------------
 //Footer

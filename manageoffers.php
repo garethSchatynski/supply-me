@@ -1,8 +1,11 @@
 <?php
-session_start(); 
+//include a db.php file to connect to database
+session_start();
 include ("db.php");
+
+
 //create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Open Contracts";
+$pagename="Manage Offers";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
@@ -20,8 +23,6 @@ echo "<title>".$pagename."</title>";
 //Header
 //---------------------------------------------
 
-
-//Multiple choice Navbar depending on login state
 echo "<div class=navbar-fixed>";
 echo   "<nav>";
 echo     "<div class=nav-wrapper>";
@@ -48,6 +49,7 @@ echo        "</ul>";
 echo      "</div>";
 echo    "</nav>";
 echo  "</div>";
+
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
@@ -59,56 +61,59 @@ echo  "</div>";
 // echo      "</div>";
 // echo    "</div>";
 
+include("detectlogin.php");
+
 //---------------------------------------------
 //welcome of the site
 //---------------------------------------------
-
 echo "<body>";
 echo "<center>";
-include ("detectlogin.php");
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Open contracts avaliable for new bids </i></font>";
 echo "</div>";
 echo "</body>";
 
 echo "<p>";
-echo "</center>";
-//---------------------------------------------
-//body of the site view open Contracts
-//---------------------------------------------
-$query = "SELECT * FROM contracts WHERE contractStatus='open'";
-    // execute query
-    $sql = $con->query($query);
-    // num_rows will count the affected rows base on your sql query. so $n will return a number base on your query
-    $n = $sql->num_rows;
 
-    
-    // if $n is > 0 it mean their is an existing record that match base on your query above 
-    if($n > 0){
-        $contract_data = mysqli_fetch_array($sql);
-		echo "<div class=container>";
-		echo "<div class='collection'>";
-		echo "<a class=collection-item href=contractinfo.php?u_contractID=".$contract_data['contractID'].".	 Contract Name: ".$contract_data['itemName']. "</b> - Country: ".$contract_data['itemCountry']."<p align=right>Quantity Required: ".$contract_data['itemQuant'];
-		echo "</div>";
-		echo "</div>";
-		echo "</a>";
-	}
-		else {
-    
-			echo "No Open Contracts Avaliable!";
-			}
-		
+//---------------------------------------------
+//body of the site (sign up)
+//---------------------------------------------
+$query = "SELECT * FROM offers WHERE userId=".$_SESSION['c_userid'].", AND offerStatus='open'";
+// execute query
+$sql = $con->query($query);
+// num_rows will count the affected rows base on your sql query. so $n will return a number base on your query
+$n = $sql->num_rows;
 
+
+// if $n is > 0 it mean their is an existing record that match base on your query above 
+if($n > 0){
+    $array = mysqli_fetch_array($sql);
+    echo "<div class=container>";
+    echo "<div class='collection'>";
+    echo "<a class=collection-item href=contractinfo.php?u_contractID=".$array['offerID'];
+    echo "</div>";
+    echo "</div>";
+    echo "</a>";
+}
+    else {
+
+        echo "No Open Contracts Avaliable!";
+        }
+
+
+
+//---------------------------------------------
+//body of the site (Promotion + Icons)
+//---------------------------------------------
+
+
+
+
+//---------------------------------------------
+//Footer
+//---------------------------------------------
+//include footer layout
 include("footfile.html");
 
 ?>
-
-
-
-
-
-
-
-

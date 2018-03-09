@@ -34,23 +34,15 @@ echo        "<ul class=right hide-on-med-and-down>";
 		echo  "<li><a href=createcontract.php>Create Contract</a></li>";
 		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
 		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
+		echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
 		echo  "<li><a href=accountbuyer.php>Account</a></li>";
 		echo  "<li><a href=logout.php>Sign Out</a></li>";
 	}
 	else
 	{
-			if (isset($_SESSION['c_supplierid']))
-			{
-				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo  "<li><a href=accountbuyer.php>Account</a></li>";
-				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
-				echo  "<li><a href=logout.php>Sign Out</a></li>";
-
-			}
 
 				echo   "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+				echo   "<li><a href=register.php>Register</a></li>";
 				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
 		}
 echo        "</ul>";
@@ -73,12 +65,12 @@ echo  "</div>";
 //---------------------------------------------
 //Picture Slideshow
 //---------------------------------------------
+include("detectlogin.php");
 include("welcome.html");
 
 //---------------------------------------------
 //welcome of the site
 //---------------------------------------------
-
 echo "<body>";
 echo "<center>";
 echo "<div class=container>";
@@ -98,23 +90,13 @@ echo "<p>";
 	}
 	else
 	{
-			if (isset($_SESSION['c_supplierid']))
-			{
-
-
-			}
 				echo "<font size=2> <p><i> Please sign in or register to continue </i></font>";
 				echo 	"<div class=container>";
 				echo    "<div class=row>";
-				echo      "<div class='col s12'><p><h6> Are you a buyer or supplier?</h6></p></div>";
-				echo      "<div class='col s6'><a href=registerbuyer.php class='waves-effect waves-light btn-large home'>Register as a Buyer</a></div>";
-				echo      "<div class='col s6'><a href=registersupplier.php class='waves-effect waves-light btn-large home'>Register as a Supplier</a></div>";
+				echo      "<div class='col s12'><a href=register.php class='btn-large'>Register to Supplyme</a></div>";
 				echo    "</div>";
 				echo    "</div>";
 		}
-
-
-
 
 echo "</center>";
 

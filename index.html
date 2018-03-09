@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel=stylesheet type=text/css href=materialize.css>
     <script src="./node_modules/web3/dist/web3.min.js"></script>
 
 </head>
@@ -10,6 +11,8 @@
         <h1>Eth Test</h1>
 
         <h2 id="instructor"></h2>
+        <img id"loader" src="lg.double-ring-spinner.gif">
+
 
         <label for="name" class="col-lg-2 control-label">Instructor Name</label>
         <input id="name" type="text">
@@ -31,10 +34,24 @@
             // set the provider you want from Web3.providers
             web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
         }
-
+//Eth address from where the smart contract instructor modification will be made
         web3.eth.defaultAccount = web3.eth.accounts[0];
 
         var supplymeContract = web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
 	{
 		"constant": true,
 		"inputs": [],
@@ -54,6 +71,23 @@
 		"type": "function"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "age",
+				"type": "uint256"
+			}
+		],
+		"name": "Instructor",
+		"type": "event"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -70,22 +104,34 @@
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	}
 ]);
 
+ var supplyme = supplymeContract.at('0x48ba6dddea46642263815a3cfb920b187cb44811');
+    // Use event to call function
+    var instructorEvent = supplyme.Instructor();
 
-    var supplyme = supplymeContract.at('0xf497d57f6a4fc608c2fdd6422121476eaa2afc83');
-    console.log(supplyme);
-
-    supplyme.getInstructor(function(error, result) {
+    instructorEvent.watch(function(error, result) {
+      //if error absent
         if (!error) {
-            $("#instructor").html(result[0]+'('+result[1]+' years old)');
-        }else
-            console.log(error);
-    });
+            //call loader
 
+            $("#instructor").html(result.args.name + ' (' + result.args.age + ' years old)' );
+        } else {
+            $(".loader").hide();
+            console.log(error);
+        }
+    });
+    $(".loader").hide();
     $("#button").click(function() {
         supplyme.setInstructor($("#name").val(), $("#age").val());
+        $(".loader").show();
     });
 
     </script>

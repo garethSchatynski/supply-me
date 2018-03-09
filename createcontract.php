@@ -33,23 +33,15 @@ echo        "<ul class=right hide-on-med-and-down>";
 		echo  "<li><a href=createcontract.php>Create Contract</a></li>";
 		echo  "<li><a href=contracts.php>Open Contracts</a></li>";
 		echo  "<li><a href=managecontracts.php>Manage Contracts</a></li>";
+		echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
 		echo  "<li><a href=accountbuyer.php>Account</a></li>";
 		echo  "<li><a href=logout.php>Sign Out</a></li>";
 	}
 	else
 	{
-			if (isset($_SESSION['c_supplierid']))
-			{
-				echo  "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo  "<li><a href=accountbuyer.php>Account</a></li>";
-				echo  "<li><a href=manageoffers.php>Manage Offers</a></li>";
-				echo  "<li><a href=logout.php>Sign Out</a></li>";
-
-			}
 
 				echo   "<li><a href=contracts.php>Avaliable Contracts</a></li>";
-				echo   "<li><a href=registerbuyer.php>Register as Buyer</a></li>";
-				echo   "<li><a href=registersupplier.php>Register as Supplier</a></li>";
+				echo   "<li><a href=register.php>Register</a></li>";
 				echo   "<li><a href=login.php class=btn>Sign In</a></li>";
 		}
 echo        "</ul>";
@@ -72,7 +64,7 @@ echo  "</div>";
 //---------------------------------------------
 //welcome of the site
 //---------------------------------------------
-include ("detectloginbuyer.php");
+include ("detectlogin.php");
 echo "<body>";
 echo "<center>";
 echo "<div class=container>";

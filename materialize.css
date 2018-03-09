@@ -7,6 +7,11 @@
   background-color: #e51c23 !important;
 }
 
+.loader {
+  width: 100px;
+  display:none;
+}
+
 .materialize-red-text {
   color: #e51c23 !important;
 }
@@ -3009,7 +3014,15 @@ td, th {
   display: table-cell;
   text-align: left;
   vertical-align: middle;
-  border-radius: 2px;
+  border-radius: 1px;
+}
+
+td {
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 1px;
 }
 
 @media only screen and (max-width: 992px) {
@@ -3567,6 +3580,14 @@ nav ul a span.badge {
   margin-left: auto;
   left: auto;
   right: auto;
+}
+
+.bluebanded {
+  background: #e3f2fd
+}
+table {
+  border-style: solid;
+  border-width: 1px;
 }
 
 .row .col.offset-s1 {

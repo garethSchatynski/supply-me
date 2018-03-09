@@ -11,6 +11,7 @@ echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
 //call in the style sheet called ystylesheet.css to format the page as defined in the style sheet
 echo "<link rel=stylesheet type=text/css href=materialize.css>";
 echo "<script src=js/materialize.js></script>";
+echo "<script src=./node_modules/web3/dist/web3.min.js></script>";
 //---------------------------------------------
 //Header
 //---------------------------------------------

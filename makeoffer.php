@@ -1,17 +1,13 @@
 <?php
-session_start(); 
-include ("db.php");
-//create a variable called $pagename which contains the actual name of the page and set up scaling
-$pagename="Open Contracts";
+session_start();
+include 'db.php';
+$pagename="Information on Offer";
 echo "<head>";
 echo "<meta charset=utf-8 />";
 echo "<meta name=viewport content=width=device-width, initial-scale=1.0 />";
 //call in the style sheet called ystylesheet.css to format the page as defined in the style sheet
 echo "<link rel=stylesheet type=text/css href=materialize.css>";
 echo "<script src=js/materialize.js></script>";
-//---------------------------------------------
-//Header
-//---------------------------------------------
 
 //display window title
 echo "<title>".$pagename."</title>";
@@ -19,9 +15,6 @@ echo "<title>".$pagename."</title>";
 //---------------------------------------------
 //Header
 //---------------------------------------------
-
-
-//Multiple choice Navbar depending on login state
 echo "<div class=navbar-fixed>";
 echo   "<nav>";
 echo     "<div class=nav-wrapper>";
@@ -48,16 +41,22 @@ echo        "</ul>";
 echo      "</div>";
 echo    "</nav>";
 echo  "</div>";
+
 //---------------------------------------------
 //Breadcrumbs Below Nav (Hompage not used)
 //---------------------------------------------
-// echo    "<div>";
-// echo      "<div class=col s12>";
-// echo        "<a href=#! class=breadcrumb>First</a>";
-// echo        "<a href=#! class=breadcrumb>Second</a>";
+echo    "<div class=breadcrumb-container>";
+echo      "<div class='col s12'>";
+echo        "<a href=index.php class=breadcrumb>Home</a>";
+echo        "  >";
+echo        "<a href=register.php class=breadcrumb>Registration</a>";
+echo        "  >";
+echo        "<a href=getregister.php class=breadcrumb>Registration Information</a>";
 // echo        "<a href=#! class=breadcrumb>Third</a>";
-// echo      "</div>";
-// echo    "</div>";
+//echo        "  >";
+echo      "</div>";
+echo    "</div>";
+echo    "</div>";
 
 //---------------------------------------------
 //welcome of the site
@@ -65,50 +64,53 @@ echo  "</div>";
 
 echo "<body>";
 echo "<center>";
-include ("detectlogin.php");
 echo "<div class=container>";
 //display name of the page and some text (main section)
 echo "<h5>".$pagename."</h5>";
-echo "<font size=2> <p><i> Open contracts avaliable for new bids </i></font>";
 echo "</div>";
 echo "</body>";
 
 echo "<p>";
+
+
+//Capture the details entered in the form using the $_POST superglobal variable
+//Store these details into a set of new variables
+$total=$_POST['total'];
+$uid=$_SESSION['c_userid'];
+$status='open';
+$cid=$_SESSION['cid'];
+
+
+//If any of the variables is empty
+if (!$total)
+{
+	echo "<p>Your form is incomplete ";
+	echo "<br>Please offer a price ";
+	echo "<br>Go back to <a href=contractinfo.php?u_contractID=".$contract_data['contractID'].">Back to contract</a>";
+}
+else
+{	
+		//Write SQL query to insert new user into users table and execute SQL query
+
+		mysqli_query($con,"INSERT INTO offers (totalCost, offerStatus, contractID, userId)
+		values ('".$total."','".$status."','".$cid."','".$uid."')");
+		//Retrieve the error number. if the error detector returns the number 0, everything is fine
+		if (mysqli_errno($con)==0)
+		{
+			
+			echo "<p><b>Offer Created Successfully</b></p>";
+			echo "<div class='row'>";
+			echo "<div class='col s12 m4 l2'><p></p></div>";
+			echo "<div class='col s12 m4 l8'><a href=contracts.php class='btn-large home'>View other contracts</a></div>";
+			echo "</div>";
+			echo "</div>";
+			echo "<p>";
+		}
+	}	
+
+
+
+
 echo "</center>";
-//---------------------------------------------
-//body of the site view open Contracts
-//---------------------------------------------
-$query = "SELECT * FROM contracts WHERE contractStatus='open'";
-    // execute query
-    $sql = $con->query($query);
-    // num_rows will count the affected rows base on your sql query. so $n will return a number base on your query
-    $n = $sql->num_rows;
-
-    
-    // if $n is > 0 it mean their is an existing record that match base on your query above 
-    if($n > 0){
-        $contract_data = mysqli_fetch_array($sql);
-		echo "<div class=container>";
-		echo "<div class='collection'>";
-		echo "<a class=collection-item href=contractinfo.php?u_contractID=".$contract_data['contractID'].".	 Contract Name: ".$contract_data['itemName']. "</b> - Country: ".$contract_data['itemCountry']."<p align=right>Quantity Required: ".$contract_data['itemQuant'];
-		echo "</div>";
-		echo "</div>";
-		echo "</a>";
-	}
-		else {
-    
-			echo "No Open Contracts Avaliable!";
-			}
-		
-
 include("footfile.html");
-
 ?>
-
-
-
-
-
-
-
-
